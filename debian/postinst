@@ -9,7 +9,7 @@ if [ "$1" = "configure" ]; then
 	#No running update-grub when apt-snapshot subvolumes will be delete
 	sed -i 's/os.system("update-grub")//g' /usr/bin/apt-btrfs-snapshot
 	#Deletion of all snapshot taken by apt-btrfs-snapshot
-	for delete in $(btrfs subvolume list / | grep @apt-snapshot | awk '{ print $9 }'); do apt-btrfs-snapshot delete $delete; done
+	for delete in $(btrfs subvolume list / | grep @apt-snapshot | grep -v @apt-snapshot-old-root | awk '{ print $9 }'); do apt-btrfs-snapshot delete $delete; done
 	#Remove the hook dpkg file to disable apt-btrfs-snapshot
         rm -f /etc/apt/apt.conf.d/9999btrfs-snapshot
 	fi

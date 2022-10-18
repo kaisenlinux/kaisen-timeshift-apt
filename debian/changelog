@@ -1,3 +1,9 @@
+kaisen-timeshift-apt (1.2) kaisen-packages; urgency=high
+
+  * No deletion of @apt-snapshot-old-root snapshots to fix the dpkg error
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Tue, 18 Oct 2022 21:39:19 +0100
+
 kaisen-timeshift-apt (1.1) kaisen-packages; urgency=high
 
   * Fix the subvolume test to running the snapshot for LUKS configuration

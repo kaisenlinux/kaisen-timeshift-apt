@@ -1,3 +1,9 @@
+kaisen-timeshift-apt (1.1) kaisen-packages; urgency=high
+
+  * Fix the subvolume test to running the snapshot for LUKS configuration
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Tue, 18 Oct 2022 16:22:42 +0100
+
 kaisen-timeshift-apt (1.0) kaisen-packages; urgency=medium
 
   * Initial release

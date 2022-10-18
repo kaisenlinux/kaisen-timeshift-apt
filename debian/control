@@ -1,0 +1,18 @@
+Source: kaisen-timeshift-apt
+Section: admin
+Priority: optional
+Maintainer: Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.6.1
+Homepage: https://kaisenlinux.org
+Vcs-Browser: https://gitlab.com/kaisenlinux/packages/kaisen-timeshift-apt
+Vcs-Git: https://gitlab.com/kaisenlinux/packages/kaisen-timeshift-apt.git
+
+Package: kaisen-timeshift-apt
+Architecture: all
+Depends:
+ btrfs-progs,
+ timeshift,
+Suggests: grub-btrfs
+Description: Automatically create snapshots when APT is used with Timeshift

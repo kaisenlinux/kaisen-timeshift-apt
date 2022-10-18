@@ -1,0 +1,1 @@
+DPkg::Pre-Invoke { "/usr/share/kaisen-timeshift-apt/kaisen-timeshift-apt" };

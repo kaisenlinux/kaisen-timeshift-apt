@@ -1,3 +1,10 @@
+kaisen-timeshift-apt (1.3) kaisen-packages; urgency=high
+
+  * Add exit 1 when the script has not executed in root
+  * Typo
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Sun, 23 Oct 2022 16:58:07 +0100
+
 kaisen-timeshift-apt (1.2) kaisen-packages; urgency=high
 
   * No deletion of @apt-snapshot-old-root snapshots to fix the dpkg error

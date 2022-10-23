@@ -7,6 +7,7 @@ export RED='\e[1;31m'
 
 if [ "$EUID" -ne "0" ]; then
 	echo -e $RED "Run this script as root or with the sudo command."
+	exit 1
 fi
 
 if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then
@@ -15,7 +16,7 @@ if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then
 fi
 
 if ! command -v timeshift > /dev/null; then
-exit 0
+	exit 0
 fi
 
 #Check if / use BTRFS as filesystem to remove kaisen-btrfs-snapshots if BTRFS not use

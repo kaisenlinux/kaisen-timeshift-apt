@@ -1,2 +1,3 @@
 kaisen-timeshift-apt usr/share/kaisen-timeshift-apt
+kaisen-timeshift-apt-cleanup etc/cron.daily
 9999kaisen-timeshift-apt etc/apt/apt.conf.d

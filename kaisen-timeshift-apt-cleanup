@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Developed by Daniel-Alf Junghänel - DAJ_Linux for the kaisen-timeshift-apt package
+
+# Define the time, after that the snapshots get deleted
+# 7 days have 604800 seconds
+# 14 days have 1209600 seconds
+retention=604800
+
+# Get array with APT snapshots
+snapshots=$(timeshift --list | grep "Automatic APT snapshot" | awk '{ print $3 }')
+
+# Calculate the time now, multiple days in the past to epoch seconds
+pasttime=$(($(date '+%s')-$retention))
+
+# Main logic
+for snapshot in $snapshots
+do
+  # Convert the snapshot time to epoch seconds
+  snaptime=$(date '+%s' -d "${snapshot:0:4}${snapshot:5:2}${snapshot:8:2} ${snapshot:11:2}:${snapshot:14:2}:${snapshot:17:2}")
+  echo $snaptime
+  # Compare the time
+  result=$(($snaptime-$pasttime))
+  echo $result
+  # If the result is smaller zero, delete it!
+  if [ $result -lt 0 ]; then
+    timeshift --delete --snapshot $snapshot
+  fi
+done

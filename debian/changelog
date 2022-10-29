@@ -1,3 +1,11 @@
+kaisen-timeshift-apt (1.4) kaisen-packages; urgency=medium
+
+  * Add a cleanup snapshots cron script to delete all snapshots taken by the
+    kaisen-timeshift-apt script all 7 days
+  * Thanks to Daniel-Alf Junghänel for this script!
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Sat, 29 Oct 2022 17:03:17 +0100
+
 kaisen-timeshift-apt (1.3) kaisen-packages; urgency=high
 
   * Add exit 1 when the script has not executed in root

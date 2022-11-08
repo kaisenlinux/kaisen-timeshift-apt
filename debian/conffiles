@@ -1,0 +1,1 @@
+remove-on-upgrade /etc/cron.daily/kaisen-timeshift-apt-cleanup

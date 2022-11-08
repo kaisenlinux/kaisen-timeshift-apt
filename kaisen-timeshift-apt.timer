@@ -1,0 +1,13 @@
+[Unit]
+Description=Run the APT snapshot cleanup randomly
+
+[Timer]
+OnCalendar=minutely
+Persistent=true
+AccuracySec=1us
+RandomizedDelaySec=3600
+FixedRandomDelay=false
+RemainAfterElapse=true
+
+[Install]
+WantedBy=timers.target

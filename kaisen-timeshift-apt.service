@@ -1,0 +1,9 @@
+[Unit]
+Description=Kaisen Timeshift APT Cleanup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/share/kaisen-timeshift-apt/kaisen-timeshift-apt-cleanup
+
+[Install]
+WantedBy=multi-user.target

@@ -1,3 +1,13 @@
+kaisen-timeshift-apt (1.5) kaisen-packages; urgency=medium
+
+  * Replace the cron.daily script by a systemd timer
+  * Improvements of the kaisen-timeshift-apt-cleanup script
+  * Move the postinst script as the preinst script
+  * Thanks again to Daniel-Alf Junghänel for these improvements and the
+    proposition to use a systemd timer instead of a cron task!
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Sat, 05 Nov 2022 18:01:19 +0100
+
 kaisen-timeshift-apt (1.4) kaisen-packages; urgency=medium
 
   * Add a cleanup snapshots cron script to delete all snapshots taken by the

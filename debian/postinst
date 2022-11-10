@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e
+
+#Completely deletion of the apt-btrfs-snapshot dpkg hook to only use kaisen-timeshift-apt instead of it
+if [ "$1" = "configure" ]; then
+	#Fix bug with the systemd still uses fstab
+	if command -v apt-btrfs-snapshot > /dev/null; then echo "#" >> /etc/fstab && sed -i '$d' /etc/fstab && systemctl daemon-reload
+	#No running update-grub when apt-snapshot subvolumes will be delete
+	sed -i 's/os.system("update-grub")//g' /usr/bin/apt-btrfs-snapshot
+	#Deletion of all snapshot taken by apt-btrfs-snapshot
+	for delete in $(btrfs subvolume list / | grep @apt-snapshot | grep -v @apt-snapshot-old-root | awk '{ print $9 }'); do apt-btrfs-snapshot delete $delete; done
+	#Remove the hook dpkg file to disable apt-btrfs-snapshot
+        rm -f /etc/apt/apt.conf.d/9999btrfs-snapshot
+	fi
+fi
+
+# Automatically added by dh_installsystemd/13.10.1
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+	# The following line should be removed in trixie or trixie+1
+	deb-systemd-helper unmask 'kaisen-timeshift-apt.service' >/dev/null || true
+
+	# was-enabled defaults to true, so new installations run enable.
+	if deb-systemd-helper --quiet was-enabled 'kaisen-timeshift-apt.service'; then
+		# Enables the unit on first installation, creates new
+		# symlinks on upgrades if the unit file has changed.
+		deb-systemd-helper enable 'kaisen-timeshift-apt.service' >/dev/null || true
+	else
+		# Update the statefile to add new symlinks (if any), which need to be
+		# cleaned up on purge. Also remove old symlinks.
+		deb-systemd-helper update-state 'kaisen-timeshift-apt.service' >/dev/null || true
+	fi
+fi
+# End automatically added section
+# Automatically added by dh_installsystemd/13.10.1
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+	# The following line should be removed in trixie or trixie+1
+	deb-systemd-helper unmask 'kaisen-timeshift-apt.timer' >/dev/null || true
+
+	# was-enabled defaults to true, so new installations run enable.
+	if deb-systemd-helper --quiet was-enabled 'kaisen-timeshift-apt.timer'; then
+		# Enables the unit on first installation, creates new
+		# symlinks on upgrades if the unit file has changed.
+		deb-systemd-helper enable 'kaisen-timeshift-apt.timer' >/dev/null || true
+	else
+		# Update the statefile to add new symlinks (if any), which need to be
+		# cleaned up on purge. Also remove old symlinks.
+		deb-systemd-helper update-state 'kaisen-timeshift-apt.timer' >/dev/null || true
+	fi
+fi
+# End automatically added section
+# Automatically added by dh_installsystemd/13.10.1
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+	if [ -z "${DPKG_ROOT:-}" ] && [ -d /run/systemd/system ]; then
+		systemctl --system daemon-reload >/dev/null || true
+		deb-systemd-invoke start 'kaisen-timeshift-apt.service' 'kaisen-timeshift-apt.timer' >/dev/null || true
+	fi
+fi
+# End automatically added section

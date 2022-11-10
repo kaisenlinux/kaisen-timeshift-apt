@@ -1,3 +1,10 @@
+kaisen-timeshift-apt (1.6) kaisen-packages; urgency=high
+
+  * Add the postinst systemd helper script directly from the sources
+  * Rename preinst in postinst to fix no execution of the clean apt-btrfs-snapshot
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Thu, 10 Nov 2022 11:26:15 +0100
+
 kaisen-timeshift-apt (1.5) kaisen-packages; urgency=medium
 
   * Replace the cron.daily script by a systemd timer

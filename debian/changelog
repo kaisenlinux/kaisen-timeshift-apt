@@ -1,8 +1,10 @@
 kaisen-timeshift-apt (1.7) kaisen-packages; urgency=high
 
   * Rename variables when kaisen-timeshift-apt checks if BTRFS is correctly used
+  * Add an if statement to execute the dpkg hook only when the kaisen-timeshift-apt
+    exists and it's executable
 
- -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Thu, 17 Nov 2022 14:54:27 +0100
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Thu, 17 Nov 2022 17:11:16 +0100
 
 kaisen-timeshift-apt (1.6) kaisen-packages; urgency=high
 

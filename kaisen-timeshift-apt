@@ -25,5 +25,7 @@ CHECK_SUBVOL=$(grep -v -E "^(#|$)" /etc/fstab | grep -v /bin | grep -v /boot | g
 CHECK_MOUNT=$(grep -o "/ btrfs" /proc/mounts 2> /dev/null || true)
 
 if [ "$CHECK_FILESYSTEM" = "btrfs" 2> /dev/null ] && [ "$CHECK_SUBVOL" = "subvol=@" 2> /dev/null ] && [ "$CHECK_MOUNT" = "/ btrfs" 2> /dev/null ]; then
+	btrfs quota disable / 2> /dev/null || true
+	btrfs quota disable /home 2> /dev/null || true
 	timeshift --scripted --yes --btrfs --create --comments "Automatic APT snapshot"
 fi

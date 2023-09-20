@@ -1,3 +1,9 @@
+kaisen-timeshift-apt (1.9) kaisen-packages; urgency=medium
+
+  * Color gestion and use exit 1 instead of exit 0
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Wed, 20 Sep 2023 04:32:44 +0100
+
 kaisen-timeshift-apt (1.8) kaisen-packages; urgency=medium
 
   * Force deactivation of BTRFS quotas

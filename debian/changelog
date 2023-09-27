@@ -1,3 +1,10 @@
+kaisen-timeshift-apt (2.0) kaisen-packages; urgency=medium
+
+  * Reuse exit 0 instead of exit 1
+  * Add the yellow color
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Wed, 27 Sep 2023 11:03:27 +0100
+
 kaisen-timeshift-apt (1.9) kaisen-packages; urgency=medium
 
   * Color gestion and use exit 1 instead of exit 0

@@ -3,6 +3,7 @@
 set -e
 
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export YELLOW='\e[0;33m'
 export RED='\e[1;31m'
 
 if [ "$EUID" -ne "0" ]; then
@@ -11,12 +12,13 @@ if [ "$EUID" -ne "0" ]; then
 fi
 
 if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then
-	echo -e $RED "Running in chroot, ignore the snapshot creation request.";tput init
-	exit 1
+	echo -e $YELLOW "Running in chroot, ignore the snapshot creation request.";tput init
+	exit 0
 fi
 
 if ! command -v timeshift > /dev/null; then
-	exit 1
+	echo -e $RED "The timeshift command was not found. Aborting.";tput init
+	exit 0
 fi
 
 #Check if / use BTRFS as filesystem to remove kaisen-btrfs-snapshots if BTRFS not use

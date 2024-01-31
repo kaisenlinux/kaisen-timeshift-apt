@@ -7,8 +7,11 @@
 # 14 days have 1209600 seconds
 retention=604800
 
+# Check the device whre snapshot are located
+device=$(grep "/ btrfs" /proc/mounts | cut -d ' ' -f1 2> /dev/null || true)
+
 # Get array with APT snapshots
-snapshots=$(timeshift --scripted --list | grep "Automatic APT snapshot" | awk '{ print $3 }')
+snapshots=$(timeshift --scripted --list --snapshot-device $device | grep "Automatic APT snapshot" | awk '{ print $3 }')
 
 # Calculate the time now, multiple days in the past to epoch seconds
 pasttime=$(($(date '+%s')-$retention))
@@ -23,7 +26,7 @@ do
   # If the result is smaller zero, delete it!
   if [ $result -lt 0 ]; then
     echo "Snapshot $snapshot gets deleted!"
-    timeshift --delete --scripted --snapshot $snapshot
+    timeshift --delete --scripted --btrfs --yes --snapshot $snapshot --snapshot-device $device
   else
     echo "Snapshot $snapshot not old enough!"
   fi

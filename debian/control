@@ -14,5 +14,8 @@ Architecture: all
 Depends:
  btrfs-progs,
  timeshift,
+ gawk,
+ grep,
+ coreutils,
 Suggests: grub-btrfs
 Description: Automatically create snapshots when APT is used with Timeshift

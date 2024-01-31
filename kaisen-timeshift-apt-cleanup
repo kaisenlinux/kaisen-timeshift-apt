@@ -1,33 +1,57 @@
 #!/bin/bash
 
-# Developed by Daniel-Alf Junghänel - DAJ_Linux for the kaisen-timeshift-apt package
+# Developed by Daniel-Alf Junghänel - DAJ_Linux and Kevin CHEVREUIL - Kaisen for the kaisen-timeshift-apt package
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+YELLOW='\e[0;33m'
+RED='\e[1;31m'
+
+# Check if exec in a chroot
+if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then
+        echo -e $YELLOW "Running in chroot, ignore the snapshot deletion request.";tput init
+        exit 0
+fi
+
+# Check the presence of the timeshift command
+if ! command -v timeshift > /dev/null; then
+        echo -e $RED "The timeshift command was not found. Aborting.";tput init
+        exit 0
+fi
+
+# If the script is executed from the overlayfs mounted by the grub when booted from a snapshot, exit.
+cat /proc/cmdline | grep kaisen-grub-btrfs > /dev/null
+
+if [ $? -eq 0 ]; then
+	echo -e $RED "You have booted from a snapshot. Aborting."
+	exit 0
+fi
 
 # Define the time, after that the snapshots get deleted
 # 7 days have 604800 seconds
 # 14 days have 1209600 seconds
-retention=604800
+RETENTION=604800
 
-# Check the device whre snapshot are located
-device=$(grep "/ btrfs" /proc/mounts | cut -d ' ' -f1 2> /dev/null || true)
+# Check which partition or UUID is /
+DEVICE=$(grep -v '#' /etc/fstab | grep -w / | grep -w subvol=@ | cut -d ' ' -f1 | cut -d '=' -f2)
 
 # Get array with APT snapshots
-snapshots=$(timeshift --scripted --list --snapshot-device $device | grep "Automatic APT snapshot" | awk '{ print $3 }')
+SNAPSHOTS=$(timeshift --scripted --btrfs --list --snapshot-device "$DEVICE" | grep "Automatic APT snapshot" | awk '{ print $3 }')
 
 # Calculate the time now, multiple days in the past to epoch seconds
-pasttime=$(($(date '+%s')-$retention))
+PASTTIME=$(($(date '+%s')-"$RETENTION"))
 
 # Main logic
-for snapshot in $snapshots
+for SNAPSHOT in $SNAPSHOTS
 do
   # Convert the snapshot time to epoch seconds
-  snaptime=$(date '+%s' -d "${snapshot:0:4}${snapshot:5:2}${snapshot:8:2} ${snapshot:11:2}:${snapshot:14:2}:${snapshot:17:2}")
+  SNAPTIME=$(date '+%s' -d "${SNAPSHOT:0:4}${SNAPSHOT:5:2}${SNAPSHOT:8:2} ${SNAPSHOT:11:2}:${SNAPSHOT:14:2}:${SNAPSHOT:17:2}")
   # Compare the time
-  result=$(($snaptime-$pasttime))
+  RESULT=$(("$SNAPTIME"-"$PASTTIME"))
   # If the result is smaller zero, delete it!
-  if [ $result -lt 0 ]; then
-    echo "Snapshot $snapshot gets deleted!"
-    timeshift --delete --scripted --btrfs --yes --snapshot $snapshot --snapshot-device $device
+  if [ "$RESULT" -lt 0 ]; then
+    echo -e $YELLOW "Snapshot $SNAPSHOT gets deleted!";tput init
+    timeshift --delete --scripted --btrfs --yes --snapshot "$SNAPSHOT" --snapshot-device "$DEVICE"
   else
-    echo "Snapshot $snapshot not old enough!"
+    echo "Snapshot $SNAPSHOT not old enough!"
   fi
 done

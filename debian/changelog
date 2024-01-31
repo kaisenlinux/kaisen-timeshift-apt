@@ -1,3 +1,23 @@
+kaisen-timeshift-apt (2.2) kaisen-packages; urgency=medium
+
+  * Many improvements of scripts
+  * Improvements for the kaisen-timeshift-apt script:
+    - The check for BTRFS using improved. Use now two variables instead of three.
+    - The grep command to the BTRFS using check improved and shorter
+  * Improvements for the kaisen-timeshift-apt-cleanup script:
+    - Check if exec in a chroot
+    - Check the presence of the timeshift command
+    - Check if exec on a overlayfs rootfs
+    - Quotted variables
+    - Uppercase variables
+    - The snapshot device is now automatically detected for the cleanup
+      (fix Device : Not Selected) and improved since the 2.1 version
+    - The snapshot device can now be an UUID or a device name
+    - Log messages are now in colors
+  * Add gawk, grep and coreutils as depends
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Wed, 31 Jan 2024 21:50:13 +0100
+
 kaisen-timeshift-apt (2.1) kaisen-packages; urgency=medium
 
   * Fix "Device : Not Selected"

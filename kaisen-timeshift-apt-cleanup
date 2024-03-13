@@ -8,13 +8,13 @@ RED='\e[1;31m'
 
 # Check if exec in a chroot
 if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then
-        echo -e $YELLOW "Running in chroot, ignore the snapshot deletion request.";tput init
+        echo -e $YELLOW "Running in chroot, ignore the snapshot deletion request.";tput sgr0
         exit 0
 fi
 
 # Check the presence of the timeshift command
 if ! command -v timeshift > /dev/null; then
-        echo -e $RED "The timeshift command was not found. Aborting.";tput init
+        echo -e $RED "The timeshift command was not found. Aborting.";tput sgr0
         exit 0
 fi
 
@@ -49,7 +49,7 @@ do
   RESULT=$(("$SNAPTIME"-"$PASTTIME"))
   # If the result is smaller zero, delete it!
   if [ "$RESULT" -lt 0 ]; then
-    echo -e $YELLOW "Snapshot $SNAPSHOT gets deleted!";tput init
+    echo -e $YELLOW "Snapshot $SNAPSHOT gets deleted!";tput sgr0
     timeshift --delete --scripted --btrfs --yes --snapshot "$SNAPSHOT" --snapshot-device "$DEVICE"
   else
     echo "Snapshot $SNAPSHOT not old enough!"

@@ -7,17 +7,17 @@ export YELLOW='\e[0;33m'
 export RED='\e[1;31m'
 
 if [ "$EUID" -ne "0" ]; then
-	echo -e $RED "Run this script as root or with the sudo command.";tput init
+	echo -e $RED "Run this script as root or with the sudo command.";tput sgr0
 	exit 1
 fi
 
 if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then
-	echo -e $YELLOW "Running in chroot, ignore the snapshot creation request.";tput init
+	echo -e $YELLOW "Running in chroot, ignore the snapshot creation request.";tput sgr0
 	exit 0
 fi
 
 if ! command -v timeshift > /dev/null; then
-	echo -e $RED "The timeshift command was not found. Aborting.";tput init
+	echo -e $RED "The timeshift command was not found. Aborting.";tput sgr0
 	exit 0
 fi
 
